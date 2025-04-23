@@ -36,36 +36,51 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: /*isLoading
+      body: PopScope(
+        canPop: false,
+        child: /*isLoading
           ? const Center(child: CircularProgressIndicator())
           : */Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 60, 16, 0),
-                  child:  Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 60, 16, 0),
+              child:  Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Icon(Icons.person, color: Colors.transparent),
-                          Image.asset('assets/images/splash.png', height: 32),
-                          const Icon(Icons.person, color: Colors.white),
-                        ],
-                      ),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Now Showing',
-                            style: TextStyle(fontSize: 20, color: Colors.white),
+                      const Icon(Icons.person, color: Colors.transparent),
+                      Image.asset('assets/images/splash.png', height: 32),
+                      GestureDetector(
+                        onTap: (){
+
+                        },
+                        child: ClipOval(
+                          child: Image.network(
+                            'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Woman_at_Lover%27s_Bridge_Tanjung_Sepat_%28cropped%29.jpg/1200px-Woman_at_Lover%27s_Bridge_Tanjung_Sepat_%28cropped%29.jpg',
+                            height: 40,
+                            width: 40,
+                            fit: BoxFit.cover,
                           ),
-                        ],
-                      )
+                        ),
+                      ),
                     ],
                   ),
-                ),
-                Expanded(
-                    child: PageView.builder(
+                  const SizedBox(height: 8),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Now Showing',
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+                child: PageView.builder(
                   itemCount: listMovies.length,
                   itemBuilder: (context, index) {
                     final movie = listMovies[index];
@@ -124,12 +139,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     OutlinedButton(
                                       onPressed: () {
                                         Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => MoviePlayerScreen(movieId: movie.id, movieTitle: movie.name, videoUrl: movie.streamLink,))
+                                            MaterialPageRoute(builder: (context) => MoviePlayerScreen(movieId: movie.id, movieTitle: movie.name, videoUrl: movie.streamLink,))
                                         );
                                       },
                                       style: OutlinedButton.styleFrom(
-                                          fixedSize: const Size(207.77, 41.58),
-                                          side: const BorderSide(
+                                        fixedSize: const Size(207.77, 41.58),
+                                        side: const BorderSide(
                                             color: Color(0xFFAA73F0)),
                                         backgroundColor: const Color(0x33BB86FC),
                                         shape: RoundedRectangleBorder(
@@ -168,17 +183,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     child: const Column(
                                                       children: [
                                                         Icon(Icons.thumb_up_alt_outlined, color: Colors.white, size: 20),
-                                                      SizedBox(width: 16),
-                                                      Text(
-                                                        "Rate",
-                                                        style: TextStyle(color: Colors.white, fontSize: 10),
-                                                      ),
+                                                        SizedBox(width: 16),
+                                                        Text(
+                                                          "Rate",
+                                                          style: TextStyle(color: Colors.white, fontSize: 10),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                             const SizedBox(width: 27),
+                                              const SizedBox(width: 27),
                                               Column(
                                                 children: [
                                                   GestureDetector(
@@ -233,8 +248,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                 )),
-              ],
-            ),
+          ],
+        ),
+      ),
     );
   }
 }
