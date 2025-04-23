@@ -1,0 +1,46 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
+import '../../modules/auth/data/index.dart';
+import '../routes/api_routes.dart';
+
+Future<String> editUser(String username) async {
+  try {
+    final token = await getFirebaseToken();
+    print('token ${token}');
+
+    if (token == null) {
+      print('User not auhenticated');
+    }
+
+    final response = await http.patch(
+      Uri.parse(ApiRoutes.updateUser),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        "data":{
+          "username": username
+        }
+      }),
+    );
+
+    print('STATUS: ${response.statusCode}');
+    print('BODY: ${response.body}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('username', username);
+
+      return('Ok');
+    } else {
+      return 'Failed to register user with the API';
+    }
+
+  } catch (e) {
+    return ('Error: $e');
+  }
+}
