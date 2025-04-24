@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:loomi_streaming/core/services/get_movies.dart';
 import 'package:loomi_streaming/core/services/index.dart';
+import 'package:loomi_streaming/screens/profile_screen.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../modules/model/movie_model.dart';
 import 'movie_player_screen.dart';
@@ -18,18 +22,31 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final List<MovieModel> listMovies = [];
   bool isLoading = true;
+  File? _imageFile;
 
   @override
   void initState() {
     super.initState();
 
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _loadSavedImage();
       var movies = await getMovies();
       setState(() {
         listMovies.addAll(movies);
         isLoading = false;
       });
     });
+  }
+
+  Future<void> _loadSavedImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final path = prefs.getString('profile_image_path');
+
+    if (path != null && mounted) {
+      setState(() {
+        _imageFile = File(path);
+      });
+    }
   }
 
   @override
@@ -53,15 +70,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       Image.asset('assets/images/splash.png', height: 32),
                       GestureDetector(
                         onTap: (){
-
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => ProfileScreen())
+                          );
                         },
-                        child: ClipOval(
-                          child: Image.network(
-                            'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Woman_at_Lover%27s_Bridge_Tanjung_Sepat_%28cropped%29.jpg/1200px-Woman_at_Lover%27s_Bridge_Tanjung_Sepat_%28cropped%29.jpg',
+                        child: _imageFile != null
+                            ? ClipOval(
+                          child: Image.file(
+                            _imageFile!,
                             height: 40,
                             width: 40,
                             fit: BoxFit.cover,
                           ),
+                        )
+                            : const CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.white24,
+                          child: Icon(Icons.person, color: Colors.white),
                         ),
                       ),
                     ],
