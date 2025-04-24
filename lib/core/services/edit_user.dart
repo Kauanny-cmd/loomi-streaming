@@ -4,7 +4,7 @@ import 'dart:convert';
 import '../../modules/auth/data/index.dart';
 import '../routes/api_routes.dart';
 
-Future<String> editUser(String username) async {
+Future<String> editUser(Map<String, dynamic> data) async {
   try {
     final token = await getFirebaseToken();
     print('token ${token}');
@@ -20,9 +20,7 @@ Future<String> editUser(String username) async {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        "data":{
-          "username": username
-        }
+        "data": data
       }),
     );
 

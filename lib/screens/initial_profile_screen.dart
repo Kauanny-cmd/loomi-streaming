@@ -99,7 +99,6 @@ class _InitialProfileScreenState extends State<InitialProfileScreen> {
                                 ),
                               ),
                               const SizedBox(width: 16),
-                              // Texto ao lado
                               const Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -142,7 +141,9 @@ class _InitialProfileScreenState extends State<InitialProfileScreen> {
                             child: OutlinedButton(
                               onPressed: () async {
                                 final response =
-                                await editUser(nameController.text);
+                                await editUser({
+                                  "username": nameController.text
+                                });
                                 if (response == "Ok") {
                                   final prefs = await SharedPreferences.getInstance();
                                   await prefs.setString('username', nameController.text);
