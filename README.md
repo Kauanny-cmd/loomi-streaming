@@ -1,6 +1,6 @@
 # Loomi Streaming
 
-O **Loomi Streaming** é uma solução ofertada pela Loomi
+O **Loomi Streaming** é uma solução ofertada pela Loomi como desafio técnico.
 
 ## Requisitos
 
