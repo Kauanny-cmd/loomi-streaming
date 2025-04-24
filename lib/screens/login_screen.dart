@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loomi_streaming/screens/forgot_password_screen.dart';
 import 'package:loomi_streaming/screens/home_screen.dart';
-import 'package:loomi_streaming/screens/initial_profile_screen.dart';
 import 'package:loomi_streaming/screens/signup_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
