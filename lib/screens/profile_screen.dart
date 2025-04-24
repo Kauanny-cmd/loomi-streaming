@@ -29,9 +29,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+    _loadSavedInfos();
 
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      _loadSavedInfos();
       var movies = await getMovies();
       setState(() {
         listMovies.addAll(movies);
@@ -76,14 +76,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           icon: const Icon(Icons.arrow_back_ios_new,
                               color: Color((0xFFBB86FC))),
                           onPressed: () {
-                            Navigator.of(context).pop();
+                            Navigator.pop(context, true);
                           },
                         ),
                         OutlinedButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (_) => EditProfiledScreen()));
-                          },
-                          style: OutlinedButton.styleFrom(
+                            onPressed: () async {
+                              final result = await Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => EditProfiledScreen(username: _username,)),
+                              );
+
+                              if (result == true) {
+                                await _loadSavedInfos();
+                              }
+                            },
+                            style: OutlinedButton.styleFrom(
                             side: const BorderSide(
                                 color: Color((0xFFBB86FC))),
                             shape: RoundedRectangleBorder(
