@@ -9,7 +9,7 @@ import '../components/social/social_icon.dart';
 import '../core/providers/login_provider.dart';
 import '../modules/auth/data/index.dart';
 import 'home_screen.dart';
-import 'initial_profile_screen.dart';
+import 'onboarding_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -187,7 +187,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         if(credential == 'Ok'){
                                           Navigator.push(
                                             context,
-                                            MaterialPageRoute(builder: (context) => const InitialProfileScreen()),
+                                            MaterialPageRoute(builder: (context) => const OnboardingScreen()),
                                           );
                                         }
                                       } on FirebaseAuthException catch (e) {

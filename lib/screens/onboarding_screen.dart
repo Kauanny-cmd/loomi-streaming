@@ -8,14 +8,14 @@ import '../components/inputs/custom_text_field_decoration.dart';
 import '../core/services/index.dart';
 import '../modules/methods/show_image_picker.dart';
 
-class InitialProfileScreen extends StatefulWidget {
-  const InitialProfileScreen({super.key});
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
 
   @override
-  State<InitialProfileScreen> createState() => _InitialProfileScreenState();
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _InitialProfileScreenState extends State<InitialProfileScreen> {
+class _OnboardingScreenState extends State<OnboardingScreen> {
   final TextEditingController nameController = TextEditingController();
   File? _imageFile;
 
