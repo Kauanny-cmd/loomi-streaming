@@ -142,11 +142,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               onPressed: () async {
                                 final response =
                                 await editUser({
-                                  "username": nameController.text
+                                  "username": nameController.text,
+                                  //"profile_picture":_imageFile!.path.toString()
                                 });
                                 if (response == "Ok") {
                                   final prefs = await SharedPreferences.getInstance();
                                   await prefs.setString('username', nameController.text);
+                                  await prefs.setString('profile_image_path', _imageFile!.path);
+
+                                  await finishedOnboarding();
 
                                   Navigator.push(
                                       context,
