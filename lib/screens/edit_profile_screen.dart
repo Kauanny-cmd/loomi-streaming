@@ -145,13 +145,14 @@ class _EditProfiledScreenState extends State<EditProfiledScreen> {
                               onPressed: () async {
                                 final response = await editUser({
                                   "username": nameController.text.isEmpty ? widget.username : nameController.text,
+                                  //"profile_picture":_imageFile?.path
                                 });
 
                                 if (response == "Ok") {
                                   final prefs = await SharedPreferences.getInstance();
                                   await prefs.setString(
                                       'username', nameController.text.isEmpty ? widget.username : nameController.text);
-
+                                  await prefs.setString('profile_image_path', _imageFile!.path);
 
                                   Navigator.pop(context, true);
                                 } else {
