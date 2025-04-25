@@ -9,7 +9,7 @@ import 'package:loomi_streaming/screens/edit_profile_screen.dart';
 import 'package:loomi_streaming/screens/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../modules/methods/show_delete_account_modal.dart';
+import '../modules/methods/index.dart';
 import '../modules/model/movie_model.dart';
 import 'change_password_screen.dart';
 
@@ -135,7 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           )
                               : const CircleAvatar(
-                            radius: 110,
+                            radius: 70,
                             backgroundColor: Colors.white24,
                             child: Icon(Icons.person, color: Colors.white),
                           ),
@@ -256,8 +256,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(16),
                             onTap: () {
-                              // ação ao clicar
-                              print('Card clicado');
+                              showDeletePlanModal(context);
                             },
                             child: Container(
                               padding: const EdgeInsets.all(12),

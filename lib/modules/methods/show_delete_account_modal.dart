@@ -63,46 +63,66 @@ void showDeleteAccountModal(BuildContext context) {
                   ),
                   const SizedBox(width: 12),
                   // Delete
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () async {
-                        final response = await deleteAccount();
+                  StatefulBuilder(
+                    builder: (context, setState) {
+                      bool isLoading = false;
 
-                        if (response == 'Ok') {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Account deleted!')),
-                          );
+                      return Expanded(
+                        child: OutlinedButton(
+                          onPressed: isLoading
+                              ? null
+                              : () async {
+                            setState(() => isLoading = true);
 
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (_) => SplashScreen()),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(response)),
-                          );
+                            final response = await deleteAccount();
 
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (_) => HomeScreen()),
-                          );
-                        }
-                      },
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color:Color((0xFFBB86FC))),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      child: const Text(
-                        'Delete',
-                        style: TextStyle(
-                          color: Color(0xFFBB86FC),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                            if (response == 'Ok') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Account deleted!')),
+                              );
+
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (_) => SplashScreen()),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(response)),
+                              );
+
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (_) => HomeScreen()),
+                              );
+                            }
+
+                            setState(() => isLoading = false);
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Color(0xFFBB86FC)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          child: isLoading
+                              ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFBB86FC)),
+                            ),
+                          )
+                              : const Text(
+                            'Delete',
+                            style: TextStyle(
+                              color: Color(0xFFBB86FC),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 ],
               )
