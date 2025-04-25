@@ -21,11 +21,7 @@ Future<void> showImagePickerOptions(
     final appDir = await getApplicationDocumentsDirectory();
     final fileName = path.basename(picked.path);
     final savedImage = await imageFile.copy('${appDir.path}/$fileName');
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('profile_image_path', savedImage.path);
     onImageSelected(savedImage);
-
   }
 
   showModalBottomSheet(
