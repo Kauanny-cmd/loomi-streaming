@@ -4,7 +4,7 @@ import 'dart:convert';
 import '../../modules/auth/data/index.dart';
 import '../routes/api_routes.dart';
 
-Future<String> finishedOnboarding(bool status) async {
+Future<String> finishedOnboarding() async {
   try {
     final token = await getFirebaseToken();
     print('token ${token}');
@@ -14,13 +14,15 @@ Future<String> finishedOnboarding(bool status) async {
     }
 
     final response = await http.patch(
-      Uri.parse(ApiRoutes.updateUser),
+      Uri.parse(ApiRoutes.finishOnboarding),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        "finished_onboarding": status
+        {
+          "data": {"finished_onboarding": true}
+        }
       }),
     );
 
@@ -28,11 +30,10 @@ Future<String> finishedOnboarding(bool status) async {
     print('BODY: ${response.body}');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      return('Ok');
+      return ('Ok');
     } else {
       return 'Failed to register user with the API';
     }
-
   } catch (e) {
     return ('Error: $e');
   }

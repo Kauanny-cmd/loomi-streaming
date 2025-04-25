@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loomi_streaming/core/services/get_user_data.dart';
 import 'package:loomi_streaming/screens/forgot_password_screen.dart';
 import 'package:loomi_streaming/screens/home_screen.dart';
+import 'package:loomi_streaming/screens/onboarding_screen.dart';
 import 'package:loomi_streaming/screens/signup_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -110,16 +112,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                       email: emailController.text,
                                       password: passwordController.text
                                   );
-
                                   final user = FirebaseAuth.instance.currentUser;
 
                                   final prefs = await SharedPreferences.getInstance();
                                   await prefs.setString('uid', user!.uid);
                                   await prefs.setString('email', emailController.text);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => const HomeScreen()),
-                                  );
+
+                                  final dataUser = await getUserData();
+
+                                  if(dataUser?['finished_onboarding'] == false){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+                                    );
+                                  }else{
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const HomeScreen()),
+                                    );
+                                  }
                                 } on FirebaseAuthException catch (e) {
                                   if (e.code == 'user-not-found') {
                                     print('No user found for that email.');
