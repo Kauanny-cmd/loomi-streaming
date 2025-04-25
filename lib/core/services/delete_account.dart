@@ -18,6 +18,8 @@ Future<String> deleteAccount() async {
     return 'Failed to register user with the API';
   }
 
+  print('firebase - ${userData?['firebase_UID']}');
+
   final response = await http.delete(
     Uri.parse(ApiRoutes.deleteUser(userData?['firebase_UID'])),
     headers: {
