@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:loomi_streaming/core/services/index.dart';
 
 import '../../modules/auth/data/index.dart';
 import '../routes/api_routes.dart';
@@ -11,8 +12,14 @@ Future<String> deleteAccount() async {
 
   final user = FirebaseAuth.instance.currentUser;
 
-  final response = await http.get(
-    Uri.parse(ApiRoutes.deleteUser(user!.uid)),
+  final userData = await getUserData();
+
+  if (userData == null) {
+    return 'Failed to register user with the API';
+  }
+
+  final response = await http.delete(
+    Uri.parse(ApiRoutes.deleteUser(userData?['firebase_UID'])),
     headers: {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',
@@ -22,7 +29,7 @@ Future<String> deleteAccount() async {
   log(response.body);
 
   if (response.statusCode == 200 || response.statusCode == 201) {
-    await user.delete();
+    await user?.delete();
     return('Ok');
   } else {
     return 'Failed to register user with the API';
